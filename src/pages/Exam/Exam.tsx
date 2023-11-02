@@ -63,11 +63,7 @@ export const Exam = () => {
                   {i + 1}
                 </Tab>
               ))}
-              <Tab
-                // NOTE: Maybe can i use this to check if all questions are answered?
-                // isDisabled={answers.length === questions.length ? false : true}
-                isDisabled={answers[questions.length - 1] ? false : true}
-              >
+              <Tab isDisabled={answers[questions.length - 1] ? false : true}>
                 Complete
               </Tab>
             </TabList>
@@ -101,7 +97,11 @@ export const Exam = () => {
                         placeholder="Your answer here..."
                         value={answers[i]}
                         onChange={(e) =>
-                          updateAnswers(questions[i]?.options, e.target.value, i)
+                          updateAnswers(
+                            questions[i]?.options,
+                            e.target.value,
+                            i,
+                          )
                         }
                       />
                     )}

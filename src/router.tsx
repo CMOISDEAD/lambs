@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Exam } from "./pages/Exam/Exam.tsx";
+
 import { Root } from "./components/layouts/Root.tsx";
+import { Exam } from "./pages/Exam/Exam.tsx";
 import Home from "./pages/Home.tsx";
+import { Login } from "./pages/Login.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -17,5 +19,9 @@ export const router = createBrowserRouter([
         element: <Exam />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
