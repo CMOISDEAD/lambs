@@ -1,7 +1,6 @@
 import {
   Card,
   CardBody,
-  CardFooter,
   HStack,
   Modal,
   ModalBody,

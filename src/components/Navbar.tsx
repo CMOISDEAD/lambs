@@ -16,6 +16,13 @@ export const Navbar = () => {
         </Heading>
       </Link>
       <div className="inline-flex gap-2 content-center items-center">
+        {user.role !== "teacher" && (
+          <Link to="dashboard">
+            <Button colorScheme="teal" variant="ghost">
+              Dashboard
+            </Button>
+          </Link>
+        )}
         {!user.isAuth ? (
           <Link to="/login">
             <Button>Login</Button>

@@ -1,15 +1,19 @@
 import { create } from "zustand";
 
-interface BearState {
+interface classStore {
   user: {
+    role: string;
     isAuth: boolean;
   };
+  exams: any[];
 }
 
-const useClassStore = create<BearState>()((_set) => ({
+const useClassStore = create<classStore>()((_set) => ({
   user: {
+    role: "teacher",
     isAuth: false,
   },
+  exams: [],
 }));
 
 export default useClassStore;

@@ -18,25 +18,39 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { test } from "./exam_placeholder";
+import useClassStore from "../../store/store";
 
 export const Exam = () => {
+  const { exams } = useClassStore();
+  const [questions, setQuestions] = useState<any[]>([]);
   const [answers, setAnswers] = useState<any>([]);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [points, setPoints] = useState<number>(0);
   const { code } = useParams();
-  const { questions } = test;
+  const navigate = useNavigate();
 
-  const updateAnswers = (opts: any, value: string, idx: number) => {
+  useEffect(() => {
+    const filtered = exams.filter((exam: any) => exam.code == code)[0];
+    if (!filtered) return navigate("/");
+    setQuestions(filtered.questions);
+  }, [code]);
+
+  const updateAnswers = (
+    opts: any,
+    value: string,
+    answer: any,
+    idx: number,
+  ) => {
+    // FIX: points doesn't decrease when changing answer
     const newAnswers = [...answers];
     newAnswers[idx] = value;
     setAnswers(newAnswers);
     if (opts === undefined) return;
-    const filtered = opts.filter((opt: any) => opt.text === value)[0];
-    if (filtered.isCorrect) setPoints(points + 1);
+    const filtered = opts.filter((opt: any) => opt === value)[0];
+    if (filtered === answer) setPoints(points + 1);
   };
 
   const handleComplete = () => {
@@ -68,7 +82,7 @@ export const Exam = () => {
               </Tab>
             </TabList>
             <TabPanels>
-              {questions.map(({ question, options, type }, i) => (
+              {questions.map(({ question, answer, options, type }, i) => (
                 <TabPanel key={i}>
                   <div className="flex flex-col gap-4 my-5">
                     <Heading size="xl">Question {i + 1}</Heading>
@@ -78,16 +92,16 @@ export const Exam = () => {
                   <form className="my-5">
                     {type === "multiple" ? (
                       <RadioGroup
-                        onChange={(value) =>
-                          updateAnswers(questions[i].options, value, i)
-                        }
+                        onChange={(value) => {
+                          updateAnswers(questions[i].options, value, answer, i);
+                        }}
                         value={answers[i]}
                       >
                         <Stack gap={10}>
                           {options &&
-                            options.map((opt, i) => (
-                              <Radio value={opt.text} key={i}>
-                                {opt.text}
+                            options.map((opt: any, idx: number) => (
+                              <Radio value={opt} key={idx}>
+                                {opt}
                               </Radio>
                             ))}
                         </Stack>
@@ -100,6 +114,7 @@ export const Exam = () => {
                           updateAnswers(
                             questions[i]?.options,
                             e.target.value,
+                            answer,
                             i,
                           )
                         }
