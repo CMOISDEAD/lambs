@@ -3,25 +3,32 @@ import {
   Card,
   CardBody,
   CardHeader,
+  HStack,
   Heading,
   Input,
   InputGroup,
   InputRightElement,
+  Select,
 } from "@chakra-ui/react";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 
-import { login } from "../api/auth";
+import { register as registerUser } from "../api/auth";
 import useClassStore from "../store/store";
 
 type Inputs = {
+  firstname: string;
+  lastname: string;
+  username: string;
   email: string;
   password: string;
+  course: any;
 };
 
-export const Login = () => {
+export const Register = () => {
+  const [type, setType] = useState("teacher"); // ["teacher", "student"]
   const [show, setShow] = useState(false);
   const {
     register,
@@ -32,8 +39,8 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin: SubmitHandler<Inputs> = async (user: any) => {
-    user.type = "teacher";
-    const response = await login(user);
+    user.type = type;
+    const response = await registerUser(user);
     if (response?.status !== 200) return;
     const { data } = response;
     useClassStore.setState({
@@ -56,11 +63,44 @@ export const Login = () => {
           <ChakraLink as={ReactRouterLink} to="/">
             Go Back
           </ChakraLink>
-          <Heading>Login</Heading>
+          <Heading>Register</Heading>
         </CardHeader>
         <CardBody>
+          <HStack spacing={4} width="full">
+            <Button
+              colorScheme="teal"
+              variant={type === "teacher" ? "solid" : "outline"}
+              className="w-1/2"
+              onClick={() => setType("teacher")}
+            >
+              Teacher
+            </Button>
+            <Button
+              colorScheme="teal"
+              variant={type === "student" ? "solid" : "outline"}
+              className="w-1/2"
+              onClick={() => setType("student")}
+            >
+              Student
+            </Button>
+          </HStack>
           <form onSubmit={handleSubmit(handleLogin)}>
             <InputGroup gap="4" flexDirection="column" marginY="2">
+              <HStack>
+                <Input
+                  placeholder="Jhon"
+                  {...register("firstname", { required: true })}
+                />
+                <Input
+                  placeholder="Doe"
+                  {...register("lastname", { required: true })}
+                />
+              </HStack>
+              <Input
+                placeholder="username"
+                {...register("username", { required: true })}
+              />
+
               <Input
                 type="email"
                 placeholder="email@ibm.com"
@@ -94,15 +134,20 @@ export const Login = () => {
                   </Button>
                 </InputRightElement>
               </InputGroup>
+              {type === "student" && (
+                <Select>
+                  <option value="9-a">9A</option>
+                </Select>
+              )}
             </InputGroup>
             <div className="flex gap-4">
               <Button
                 type="submit"
+                className="w-full"
                 isDisabled={errors.email || errors.password ? true : false}
               >
-                Login
+                Register
               </Button>
-              <Button isDisabled>Recover</Button>
             </div>
           </form>
         </CardBody>

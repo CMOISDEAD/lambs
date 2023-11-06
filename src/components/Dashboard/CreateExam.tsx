@@ -6,11 +6,13 @@ import {
   HStack,
   Heading,
   Input,
+  Select,
   Text,
 } from "@chakra-ui/react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { RxPlus } from "react-icons/rx";
 
+import { createExam } from "../../api/exams";
 import useClassStore from "../../store/store";
 import { generateRoomCode } from "../../utils";
 import { CreateInputs } from "./CreateInputs";
@@ -18,10 +20,16 @@ import { CreateInputs } from "./CreateInputs";
 interface Inputs {
   name: string;
   code: number | null;
+  courseId?: number;
+  course: any;
   questions: any[];
+  start: string;
+  end: string;
+  teacher: any;
 }
 
 export const CreateExam = () => {
+  const { courses } = useClassStore.getState();
   const {
     control,
     register,
@@ -39,11 +47,12 @@ export const CreateExam = () => {
     append({ type: "text", question: "" });
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    useClassStore.setState({
-      exams: [...useClassStore.getState().exams, data],
-    });
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const { user } = useClassStore.getState();
+    const response = await createExam(data, user);
+    if (!response || response.error) return;
+    const { exams } = response;
+    useClassStore.setState({ exams });
   };
 
   return (
@@ -63,8 +72,27 @@ export const CreateExam = () => {
                 required: true,
               })}
             />
+            <Select
+              {...register("courseId", { required: true, valueAsNumber: true })}
+            >
+              {courses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.name}
+                </option>
+              ))}
+            </Select>
             <Input
-              width={20}
+              width={60}
+              type="datetime-local"
+              {...register("start", { required: true, valueAsDate: true })}
+            />
+            <Input
+              width={60}
+              type="datetime-local"
+              {...register("end", { required: true, valueAsDate: true })}
+            />
+            <Input
+              width={28}
               type="number"
               placeholder="2312"
               {...register("code", {

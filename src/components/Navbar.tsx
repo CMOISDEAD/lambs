@@ -1,4 +1,18 @@
-import { Avatar, Button, Heading, useColorMode } from "@chakra-ui/react";
+import {
+  Avatar,
+  Button,
+  Heading,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Stack,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
 import { RxArchive, RxMoon, RxSun } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
@@ -24,11 +38,50 @@ export const Navbar = () => {
           </Link>
         )}
         {!user.isAuth ? (
-          <Link to="/login">
-            <Button>Login</Button>
-          </Link>
+          <>
+            <Link to="/login">
+              <Button>Login</Button>
+            </Link>
+            <Link to="/register">
+              <Button>Register</Button>
+            </Link>
+          </>
         ) : (
-          <Avatar name="Camilo Davila" src="" size="sm" />
+          <Popover variant="outline">
+            <PopoverTrigger>
+              <Avatar
+                src=""
+                size="sm"
+                name={`${user.firstname} ${user.lastname}`}
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              <PopoverHeader>
+                <Stack>
+                  <Text fontSize="sm">{`${user.firstname} ${user.lastname}`}</Text>
+                  <Text
+                    fontSize="sm"
+                    color="teal"
+                    className="underline"
+                  >{`${user.email}`}</Text>
+                </Stack>
+              </PopoverHeader>
+              <PopoverBody>
+                <Stack spacing={4}>
+                  <Link to="/">
+                    <Button isDisabled width="full">
+                      Profile
+                    </Button>
+                  </Link>
+                  <Link to="/logout">
+                    <Button width="full">Logout</Button>
+                  </Link>
+                </Stack>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
         )}
         <Button onClick={toggleColorMode} variant="ghost">
           {colorMode === "light" ? <RxMoon /> : <RxSun />}

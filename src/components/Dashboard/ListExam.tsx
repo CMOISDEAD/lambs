@@ -44,8 +44,8 @@ export const ListExams = () => {
                     <Badge colorScheme="green">{exam.code}</Badge>
                   </Td>
                   <Td>{exam.name}</Td>
-                  <Td>Group 3</Td>
-                  <Td isNumeric>{exam.questions.length}</Td>
+                  <Td>{exam.course?.name}</Td>
+                  <Td isNumeric>{exam.questions?.length}</Td>
                   <Td isNumeric>
                     <Button
                       variant="ghost"

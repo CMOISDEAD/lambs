@@ -28,7 +28,7 @@ export const StudentsTable = () => {
                 <Th>Grade </Th>
               </Tr>
             </Thead>
-            <Tbody> </Tbody>
+            <Tbody></Tbody>
           </Table>
         </TableContainer>
       </CardBody>

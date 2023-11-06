@@ -5,6 +5,7 @@ import { Dashboard } from "./pages/Dashboard/Dashboard.tsx";
 import { Exam } from "./pages/Exam/Exam.tsx";
 import Home from "./pages/Home.tsx";
 import { Login } from "./pages/Login.tsx";
+import { Register } from "./pages/Register.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -28,5 +29,9 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
