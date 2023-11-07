@@ -4,7 +4,7 @@ interface Student { }
 
 export const getStudents = async () => {
   try {
-    return await instance.get("/student");
+    return await instance.get("/api/student");
   } catch (error) {
     console.error(error);
   }
@@ -12,15 +12,16 @@ export const getStudents = async () => {
 
 export const getStudent = async (id: number) => {
   try {
-    return await instance.get(`/student/${id}`);
+    return await instance.get(`/api/student/${id}`);
   } catch (error) {
     console.error(error);
   }
 };
 
-export const createStudent = async (student: Student) => {
+export const createStudent = async (data: Student) => {
   try {
-    return await instance.post("/student", { data: student });
+    console.log(data);
+    return await instance.post("/api/student", data);
   } catch (error) {
     console.error(error);
   }
@@ -28,7 +29,7 @@ export const createStudent = async (student: Student) => {
 
 export const deleteStudent = async (id: number) => {
   try {
-    return await instance.delete("/student", { data: { id } });
+    return await instance.delete("/api/student", { data: { id } });
   } catch (error) {
     console.error(error);
   }

@@ -9,11 +9,14 @@ import {
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import moment from "moment";
 import { RxTrash } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 import useClassStore from "../../store/store";
 
@@ -33,6 +36,9 @@ export const ListExams = () => {
                 <Th>Code </Th>
                 <Th>Name </Th>
                 <Th>Course </Th>
+                <Th>Start</Th>
+                <Th>End</Th>
+                <Th>is active</Th>
                 <Th isNumeric># questions</Th>
                 <Th />
               </Tr>
@@ -43,8 +49,15 @@ export const ListExams = () => {
                   <Td>
                     <Badge colorScheme="green">{exam.code}</Badge>
                   </Td>
-                  <Td>{exam.name}</Td>
+                  <Td>
+                    <Link to={`/exam/overview/${exam.id}`}>
+                      <Text> {exam.name}</Text>
+                    </Link>
+                  </Td>
                   <Td>{exam.course?.name}</Td>
+                  <Td>{moment(Date.parse(exam.start)).fromNow()}</Td>
+                  <Td>{moment(Date.parse(exam.end)).fromNow()}</Td>
+                  <Td>{exam.active ? "Yes" : "No"}</Td>
                   <Td isNumeric>{exam.questions?.length}</Td>
                   <Td isNumeric>
                     <Button

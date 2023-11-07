@@ -14,7 +14,7 @@ import { RxPlus } from "react-icons/rx";
 
 import { createExam } from "../../api/exams";
 import useClassStore from "../../store/store";
-import { generateRoomCode } from "../../utils";
+import { generateRoomCode, refresh } from "../../utils";
 import { CreateInputs } from "./CreateInputs";
 
 interface Inputs {
@@ -36,7 +36,7 @@ export const CreateExam = () => {
     watch,
     handleSubmit,
     setValue,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<Inputs>();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -48,11 +48,11 @@ export const CreateExam = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
     const { user } = useClassStore.getState();
     const response = await createExam(data, user);
     if (!response || response.error) return;
-    const { exams } = response;
-    useClassStore.setState({ exams });
+    refresh();
   };
 
   return (
@@ -105,8 +105,8 @@ export const CreateExam = () => {
           </Text>
           {fields.map((question, i) => (
             <CreateInputs
-              key={question.id}
               i={i}
+              key={question.id}
               watch={watch}
               update={setValue}
               remove={remove}

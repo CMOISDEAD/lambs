@@ -1,12 +1,14 @@
 import {
   Button,
   FormControl,
+  FormLabel,
   HStack,
   Input,
   Radio,
   RadioGroup,
   Select,
   Stack,
+  Switch,
   Text,
   Textarea,
 } from "@chakra-ui/react";
@@ -42,6 +44,17 @@ export const CreateInputs = ({ register, remove, update, watch, i }: any) => {
           placeholder="question"
           {...register(`questions.${i}.question`)}
         />
+        <FormControl
+          display="flex"
+          alignItems="center"
+          width={"72"}
+          onChange={(e: any) => update(`questions.${i}.math`, e.target.checked)}
+        >
+          <FormLabel htmlFor="math-mode" mb="0">
+            Enable Math Mode ?
+          </FormLabel>
+          <Switch id="math-mode" />
+        </FormControl>
       </HStack>
       {watchType === "multiple" ? (
         <Stack direction="column" spacing={2}>

@@ -21,6 +21,7 @@ export const getExam = async (id: number) => {
     return await instance.get(`/api/exam/${id}`);
   } catch (error) {
     console.error(error);
+    throw new Error("Error fetching exam");
   }
 };
 
@@ -46,6 +47,23 @@ export const createExam = async (base: Exam, user: any) => {
 export const deleteExam = async (id: number) => {
   try {
     return await instance.delete("/api/exam", { data: { id } });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const gradeExam = async (data: any) => {
+  try {
+    return await instance.post("/api/exam/grade", data);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getGrade = async (id: number) => {
+  try {
+    const { status, data } = await instance.get(`/api/exam/grade/${id}`);
+    if (status === 200) return data;
   } catch (error) {
     console.error(error);
   }

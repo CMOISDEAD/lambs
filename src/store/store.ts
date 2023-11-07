@@ -2,13 +2,19 @@ import { create } from "zustand";
 
 interface classStore {
   user: {
+    id?: number;
     firstname?: string;
     lastname?: string;
     username?: string;
     email?: string;
     password?: string;
     isAuth: boolean;
-    role: string;
+    type: string;
+    courseId?: number;
+    course: {
+      name: string;
+      exams: any[];
+    };
   };
   exams: any[];
   courses: any[];
@@ -16,7 +22,7 @@ interface classStore {
 
 const useClassStore = create<classStore>()((_set) => ({
   user: {
-    role: "teacher",
+    type: "teacher",
     isAuth: false,
   },
   exams: [],

@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { createCourse } from "../../api/course";
 import useClassStore from "../../store/store";
+import { refresh } from "../../utils";
 
 interface Inputs {
   name: string;
@@ -28,6 +29,7 @@ export const CreateCourse = () => {
     const { user } = useClassStore.getState();
     const response = await createCourse(data, user);
     if (response?.status !== 200) return console.error("Error");
+    refresh();
   };
 
   return (

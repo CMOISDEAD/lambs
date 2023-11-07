@@ -30,7 +30,7 @@ export const Navbar = () => {
         </Heading>
       </Link>
       <div className="inline-flex gap-2 content-center items-center">
-        {user.role !== "teacher" && (
+        {user.isAuth && user.type === "teacher" && (
           <Link to="dashboard">
             <Button colorScheme="teal" variant="ghost">
               Dashboard
@@ -53,6 +53,7 @@ export const Navbar = () => {
                 src=""
                 size="sm"
                 name={`${user.firstname} ${user.lastname}`}
+                className="cursor-pointer"
               />
             </PopoverTrigger>
             <PopoverContent>
@@ -70,14 +71,14 @@ export const Navbar = () => {
               </PopoverHeader>
               <PopoverBody>
                 <Stack spacing={4}>
-                  <Link to="/">
-                    <Button isDisabled width="full">
-                      Profile
+                  <Link to="/profile">
+                    <Button width="full">Profile</Button>
+                  </Link>
+                  <a href="/">
+                    <Button width="full" colorScheme="red">
+                      Logout
                     </Button>
-                  </Link>
-                  <Link to="/logout">
-                    <Button width="full">Logout</Button>
-                  </Link>
+                  </a>
                 </Stack>
               </PopoverBody>
             </PopoverContent>

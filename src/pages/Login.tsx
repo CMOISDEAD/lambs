@@ -3,6 +3,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  HStack,
   Heading,
   Input,
   InputGroup,
@@ -22,6 +23,7 @@ type Inputs = {
 };
 
 export const Login = () => {
+  const [type, setType] = useState("teacher");
   const [show, setShow] = useState(false);
   const {
     register,
@@ -32,7 +34,7 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin: SubmitHandler<Inputs> = async (user: any) => {
-    user.type = "teacher";
+    user.type = type;
     const response = await login(user);
     if (response?.status !== 200) return;
     const { data } = response;
@@ -42,6 +44,7 @@ export const Login = () => {
         ...data,
       },
     });
+    console.log(data);
     navigate("/");
   };
 
@@ -59,6 +62,25 @@ export const Login = () => {
           <Heading>Login</Heading>
         </CardHeader>
         <CardBody>
+          <HStack spacing={4} width="full">
+            <Button
+              colorScheme="teal"
+              variant={type === "teacher" ? "solid" : "outline"}
+              className="w-1/2"
+              onClick={() => setType("teacher")}
+            >
+              Teacher
+            </Button>
+            <Button
+              colorScheme="teal"
+              variant={type === "student" ? "solid" : "outline"}
+              className="w-1/2"
+              onClick={() => setType("student")}
+            >
+              Student
+            </Button>
+          </HStack>
+
           <form onSubmit={handleSubmit(handleLogin)}>
             <InputGroup gap="4" flexDirection="column" marginY="2">
               <Input
